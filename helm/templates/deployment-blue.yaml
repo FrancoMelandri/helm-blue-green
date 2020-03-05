@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}-blue
+  namespace: {{ .Values.namespace }}
+  labels:
+    name: {{ .Chart.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+        name: {{ .Chart.Name }}
+        slot: blue
+  template:
+    metadata:
+      namespace: default
+      labels:
+        name: {{ .Chart.Name }}
+        slot: blue
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}-blue
+        image: my-service:{{ .Values.blue.version }}
+        ports:
+        - name: http
+          containerPort: 80
+        volumeMounts:
+        - name: appsettings
+          mountPath: /app/appsettings.json
+          subPath: appsettings.json
+      volumes:
+      - name: appsettings
+        configMap:
+           name: {{ .Chart.Name }}-blue
+  strategy:
+    type: RollingUpdate

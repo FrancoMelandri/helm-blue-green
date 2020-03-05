@@ -1,0 +1,9 @@
+namespace: default
+
+# blue:
+#   version: "0.1.0"
+
+# green:
+#   version: "0.1.0"
+
+# productionSlot: green

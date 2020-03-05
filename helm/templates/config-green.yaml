@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-green
+  namespace: {{ .Values.namespace }}
+  labels:
+     name: {{ .Chart.Name }}
+data:
+  appsettings.json: |-
+     {
+      "Logging": {
+        "LogLevel": {
+          "Default": "Information",
+          "Microsoft": "Warning",
+          "Microsoft.Hosting.Lifetime": "Information"
+        }
+      },
+      "ServiceDescription": {
+        "Name": "my-service",
+        "Component": "api",
+        "Version": "{{ .Values.green.version }}",
+        "Slot":  "green"
+      },
+      "AllowedHosts": "*"
+     }
