@@ -327,3 +327,11 @@ blue - 0.2.0#
 
 
 
+Now the command to switch immediatly from gree to blue is
+
+```bash
+> kubectl patch svc my-service -p '{"spec":{"selector":{"slot": "blue"}}}'
+```
+
+That allow you to change the selector of the service in order to route the traffic to the blue deployment set instead of the green one.
+
