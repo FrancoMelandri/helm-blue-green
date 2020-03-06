@@ -46,18 +46,23 @@ In order to test the blue/green deployment we are going to use a little service 
 
 Looking at the yaml files in the template folder
 
-```bash
+```
 .
 ├── Chart.yaml
 ├── deploy.yaml
 ├── templates
-│   ├── config-blue.yaml
-│   ├── config-green.yaml
-│   ├── deployment-blue.yaml
-│   ├── deployment-green.yaml
-│   ├── ingress.yaml
-│   ├── service-prd.yaml
-│   └── service-stg.yaml
+│   ├── blue
+│   │   ├── config.yaml
+│   │   └── deployment.yaml
+│   ├── green
+│   │   ├── config.yaml
+│   │   └── deployment.yaml
+│   ├── prd
+│   │   ├── ingress.yaml
+│   │   └── service.yaml
+│   └── stg
+│       ├── ingress.yaml
+│       └── service.yaml
 └── values.yaml
 ```
 
@@ -319,4 +324,6 @@ blue - 0.2.0#
 ```
 
 ![](./topology1.png)
+
+
 
