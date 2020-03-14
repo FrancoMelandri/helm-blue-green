@@ -24,6 +24,12 @@ spec:
         ports:
         - name: http
           containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: /weatherforecast/slot
+            port: 80
+          periodSeconds: 15
+          timeoutSeconds: 30
         volumeMounts:
         - name: appsettings
           mountPath: /app/appsettings.json
@@ -34,3 +40,6 @@ spec:
            name: {{ .Chart.Name }}-blue
   strategy:
     type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      # maxUnavailable: 1
