@@ -57,20 +57,17 @@ Looking at the yaml files in the template folder
 │   ├── green
 │   │   ├── config.yaml
 │   │   └── deployment.yaml
-│   ├── prd
-│   │   ├── ingress.yaml
-│   │   └── service.yaml
-│   └── stg
-│       ├── ingress.yaml
-│       └── service.yaml
+│   ├── ingress.yaml
+│   └── service.yaml
 └── values.yaml
+
 ```
 
 we get the following topology of the system
 
 ![](./topology.png)
 
-where the service prd and the service stg use the selector **slot:blue|green** to point the the right deployment.
+where the service use the selector **slot:blue|green** to point the the right deployment.
 
 ## Release 0.1.0
 
@@ -99,8 +96,7 @@ result
 NAME             TYPE           CLUSTER-IP      EXTERNAL-IP   PORT(S)                      AGE
 ingress-nginx    LoadBalancer   10.97.201.105   localhost     80:31940/TCP,443:30232/TCP   42h
 kubernetes       ClusterIP      10.96.0.1       <none>        443/TCP                      2d3h
-my-service-prd   ClusterIP      10.102.1.193    <none>        80/TCP                       38m
-my-service-stg   ClusterIP      10.102.94.73    <none>        80/TCP                       38m
+my-service       ClusterIP      10.102.1.193    <none>        80/TCP                       38m
 
 > kubectl get configmap
 NAME                              DATA   AGE
@@ -123,7 +119,7 @@ my-service-blue-598ffcc8d5-qwbbn            1/1     Running   0          2m37s
 my-service-green-7fb46c446d-mx8gs           1/1     Running   0          40m
 nginx-ingress-controller-7f74f657bd-gfxcv   1/1     Running   0          42h
 
-❯ curl http://localhost.prd/weatherforecast/slot -v
+❯ curl http://localhost/weatherforecast/slot -v
 *   Trying 127.0.0.1...
 * TCP_NODELAY set
 * Connected to localhost.prd (127.0.0.1) port 80 (#0)
@@ -146,30 +142,6 @@ nginx-ingress-controller-7f74f657bd-gfxcv   1/1     Running   0          42h
 <
 * Connection #0 to host localhost.prd left intact
 green - 0.1.0#
-
-❯ curl http://localhost.stg/weatherforecast/slot -v
-*   Trying 127.0.0.1...
-* TCP_NODELAY set
-* Connected to localhost.stg (127.0.0.1) port 80 (#0)
-> GET /weatherforecast/slot HTTP/1.1
-> Host: localhost.stg
-> User-Agent: curl/7.58.0
-> Accept: */*
->
-< HTTP/1.1 200 OK
-< Server: nginx/1.17.8
-< Date: Thu, 05 Mar 2020 12:05:00 GMT
-< Content-Type: text/plain; charset=utf-8
-< Transfer-Encoding: chunked
-< Connection: keep-alive
-< Vary: Accept-Encoding
-< Access-Control-Allow-Origin: *
-< Access-Control-Allow-Credentials: true
-< Access-Control-Allow-Methods: GET, PUT, POST, DELETE, PATCH, OPTIONS
-< Access-Control-Allow-Headers: DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization
-<
-* Connection #0 to host localhost.stg left intact
-blue - 0.1.0#
 
 ```
 
@@ -198,7 +170,7 @@ command
 result
 
 ```bash
-❯ curl http://localhost.stg/weatherforecast/slot -v
+❯ curl http://localhost/weatherforecast/slot -v
 *   Trying 127.0.0.1...
 * TCP_NODELAY set
 * Connected to localhost.stg (127.0.0.1) port 80 (#0)
@@ -220,30 +192,6 @@ result
 < Access-Control-Allow-Headers: DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization
 <
 * Connection #0 to host localhost.stg left intact
-blue - 0.2.0#
-
-❯ curl http://localhost.prd/weatherforecast/slot -v
-*   Trying 127.0.0.1...
-* TCP_NODELAY set
-* Connected to localhost.prd (127.0.0.1) port 80 (#0)
-> GET /weatherforecast/slot HTTP/1.1
-> Host: localhost.prd
-> User-Agent: curl/7.58.0
-> Accept: */*
->
-< HTTP/1.1 200 OK
-< Server: nginx/1.17.8
-< Date: Thu, 05 Mar 2020 12:09:02 GMT
-< Content-Type: text/plain; charset=utf-8
-< Transfer-Encoding: chunked
-< Connection: keep-alive
-< Vary: Accept-Encoding
-< Access-Control-Allow-Origin: *
-< Access-Control-Allow-Credentials: true
-< Access-Control-Allow-Methods: GET, PUT, POST, DELETE, PATCH, OPTIONS
-< Access-Control-Allow-Headers: DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization
-<
-* Connection #0 to host localhost.prd left intact
 green - 0.1.0#
 
 ```
@@ -273,7 +221,7 @@ command
 result
 
 ```bash
-❯ curl http://localhost.stg/weatherforecast/slot -v
+❯ curl http://localhost/weatherforecast/slot -v
 *   Trying 127.0.0.1...
 * TCP_NODELAY set
 * Connected to localhost.stg (127.0.0.1) port 80 (#0)
@@ -295,39 +243,13 @@ result
 < Access-Control-Allow-Headers: DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization
 <
 * Connection #0 to host localhost.stg left intact
-green - 0.1.0#
-
-❯ curl http://localhost.prd/weatherforecast/slot -v
-*   Trying 127.0.0.1...
-* TCP_NODELAY set
-* Connected to localhost.prd (127.0.0.1) port 80 (#0)
-> GET /weatherforecast/slot HTTP/1.1
-> Host: localhost.prd
-> User-Agent: curl/7.58.0
-> Accept: */*
->
-< HTTP/1.1 200 OK
-< Server: nginx/1.17.8
-< Date: Thu, 05 Mar 2020 12:09:02 GMT
-< Content-Type: text/plain; charset=utf-8
-< Transfer-Encoding: chunked
-< Connection: keep-alive
-< Vary: Accept-Encoding
-< Access-Control-Allow-Origin: *
-< Access-Control-Allow-Credentials: true
-< Access-Control-Allow-Methods: GET, PUT, POST, DELETE, PATCH, OPTIONS
-< Access-Control-Allow-Headers: DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Authorization
-<
-* Connection #0 to host localhost.prd left intact
 blue - 0.2.0#
 
 ```
 
-![](./topology1.png)
+​	
 
-
-
-Now the command to switch immediatly from gree to blue is
+Now the command to switch immediately from green to blue is:
 
 ```bash
 > kubectl patch svc my-service -p '{"spec":{"selector":{"slot": "blue"}}}'
